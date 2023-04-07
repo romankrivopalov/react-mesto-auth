@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import Login from './Login';
+import Register from './Register';
+import ProtectedRoute from './ProtectedRoute';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from './Header';
 import Main from './Main';
@@ -115,23 +118,25 @@ function App() {
 
           <main>
             <Routes>
-              <Route path='/' element={loggedIn
-                ? <Main
-                  onEditAvatar={setIsEditAvatarPopupOpen}
-                  onEditProfile={setIsEditProfilePopupOpen}
-                  onAddPlace={setIsAddPlacePopupOpen}
-                  cards={cards}
-                  onCardClick={handleCardClick}
-                  onCardLike={handleCardLike}
-                  onCardDelete={handleCardDelete}/>
-                : <Navigate to="/login" replace />
-              } />
-              <Route path='/sign-in' />
-              <Route path='/sign-up' />
+              <Route path='/'
+                element={<ProtectedRoute
+                  element={<Main
+                    onEditAvatar={setIsEditAvatarPopupOpen}
+                    onEditProfile={setIsEditProfilePopupOpen}
+                    onAddPlace={setIsAddPlacePopupOpen}
+                    cards={cards}
+                    onCardClick={handleCardClick}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelete}/>}
+                  loggedIn={loggedIn}
+                />}
+              />
+              <Route path='/signin' element={<Login />}/>
+              <Route path='/signup' element={<Register />}/>
             </Routes>
           </main>
 
-          <Footer />
+          {loggedIn && <Footer />}
 
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
