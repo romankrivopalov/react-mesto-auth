@@ -1,8 +1,8 @@
+import AuthForm from "./AuthForm";
+
 function Register() {
   return (
-    <section>
-
-    </section>
+    <AuthForm />
   )
 }
 
