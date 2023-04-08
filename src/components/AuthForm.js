@@ -1,8 +1,8 @@
-function AuthForm() {
+function AuthForm({ title, btnText, children }) {
 
   return (
     <section className="auth-form">
-      <h2 className="auth-form__title">Регистрация</h2>
+      <h2 className="auth-form__title">{title}</h2>
       <form>
         <label className="auth-form__input-wrapper">
           <input
@@ -29,14 +29,10 @@ function AuthForm() {
         </label>
 
         <button type="submit" className="auth-form__submit-btn">
-          Войти
+          {btnText}
         </button>
       </form>
-      <a
-        href="/"
-        className="auth-form__link">
-        Уже зарегистрированы? Войти
-      </a>
+      {children}
     </section>
   )
 }

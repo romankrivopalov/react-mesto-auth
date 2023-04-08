@@ -2,7 +2,7 @@ import AuthForm from "./AuthForm";
 
 function Login() {
   return (
-    <AuthForm />
+    <AuthForm title='Вход' btnText='Войти' />
   )
 }
 
