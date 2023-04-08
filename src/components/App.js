@@ -1,4 +1,8 @@
 import { useEffect, useState } from 'react';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import Login from './Login';
+import Register from './Register';
+import ProtectedRoute from './ProtectedRoute';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from './Header';
 import Main from './Main';
@@ -11,7 +15,8 @@ import ConfirmPopup from './ConfirmPopup';
 import api from '../utils/api';
 
 function App() {
-  const [ currentUser, setCurrentUser ] = useState({}),
+  const [ loggedIn, setLoggedIn ] = useState(false),
+        [ currentUser, setCurrentUser ] = useState({}),
         [ isLoading, setIsLoading ] = useState(false),
         [ isEditAvatarPopupOpen, setIsEditAvatarPopupOpen ] = useState(false),
         [ isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = useState(false),
@@ -105,56 +110,73 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="App">
+    <BrowserRouter>
+      <CurrentUserContext.Provider value={currentUser}>
+        <div className="App">
 
-        <Header />
-        <Main
-          onEditAvatar={setIsEditAvatarPopupOpen}
-          onEditProfile={setIsEditProfilePopupOpen}
-          onAddPlace={setIsAddPlacePopupOpen}
-          cards={cards}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          <Header loggedIn={loggedIn} />
+
+          <main>
+            <Routes>
+
+              <Route path='/signin' element={<Login />} />
+              <Route path='/signup' element={<Register />} />
+
+              <Route path='/'
+                element={<ProtectedRoute
+                  element={<Main
+                    onEditAvatar={setIsEditAvatarPopupOpen}
+                    onEditProfile={setIsEditProfilePopupOpen}
+                    onAddPlace={setIsAddPlacePopupOpen}
+                    cards={cards}
+                    onCardClick={handleCardClick}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelete}/>}
+                  loggedIn={loggedIn}
+                />}
+              />
+
+            </Routes>
+          </main>
+
+          {loggedIn && <Footer />}
+
+          <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+            onUpdateAvatar={handleUpdateAvatar}
+            isLoading={isLoading}
           />
-        <Footer />
 
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onUpdateAvatar={handleUpdateAvatar}
-          isLoading={isLoading}
-        />
+          <EditProfilePopup
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+            onUpdateUser={handleUpdateUser}
+            isLoading={isLoading}
+          />
 
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onUpdateUser={handleUpdateUser}
-          isLoading={isLoading}
-        />
+          <AddPlacePopup
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+            onAddPlace={handleAddPlaceSubmit}
+            isLoading={isLoading}
+          />
 
-        <AddPlacePopup
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onAddPlace={handleAddPlaceSubmit}
-          isLoading={isLoading}
-        />
+          <ImagePopup
+            card={selectedCard}
+            onClose={closeAllPopups}
+          />
 
-        <ImagePopup
-          card={selectedCard}
-          onClose={closeAllPopups}
-        />
+          <ConfirmPopup
+            isOpen={!!cardToDelete}
+            onClose={closeAllPopups}
+            onConfirm={handleConfirmBeforeDelete}
+            isLoading={isLoading}
+          />
 
-        <ConfirmPopup
-          isOpen={!!cardToDelete}
-          onClose={closeAllPopups}
-          onConfirm={handleConfirmBeforeDelete}
-          isLoading={isLoading}
-        />
-
-      </div>
-    </CurrentUserContext.Provider>
+        </div>
+      </CurrentUserContext.Provider>
+    </BrowserRouter>
   );
 }
 
