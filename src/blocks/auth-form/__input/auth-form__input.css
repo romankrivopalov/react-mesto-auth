@@ -1,0 +1,24 @@
+.auth-form__input {
+  display: block;
+  margin: 0;
+  padding: 0 0 7px 0;
+  width: 100%;
+  background-color: inherit;
+  border: none;
+  border-bottom: 2px solid var(--color-mouse);
+  caret-color: var(--color-white);
+  transition: border-color 0.3s ease-in-out;
+}
+
+.auth-form__input::placeholder {
+  font-size: 14px;
+}
+
+.auth-form__input:focus {
+  outline: none;
+  border-color: var(--color-white);
+}
+
+.auth-form__input:focus::placeholder {
+  color: transparent;
+}
