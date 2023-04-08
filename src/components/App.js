@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 import ProtectedRoute from './ProtectedRoute';
@@ -114,10 +114,14 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <div className="App">
 
-          <Header />
+          <Header loggedIn={loggedIn} />
 
           <main>
             <Routes>
+
+              <Route path='/signin' element={<Login />} />
+              <Route path='/signup' element={<Register />} />
+
               <Route path='/'
                 element={<ProtectedRoute
                   element={<Main
@@ -131,8 +135,7 @@ function App() {
                   loggedIn={loggedIn}
                 />}
               />
-              <Route path='/signin' element={<Login />}/>
-              <Route path='/signup' element={<Register />}/>
+
             </Routes>
           </main>
 

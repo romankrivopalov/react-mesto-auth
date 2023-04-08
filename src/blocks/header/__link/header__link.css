@@ -1,0 +1,13 @@
+.header__link {
+  display: block;
+  color: var(--color-white);
+  font-size: 14px;
+  line-height: 17px;
+  text-decoration: none;
+  opacity: 1;
+  transition: opacity .3s ease-in-out;
+}
+
+.header__link:hover {
+  opacity: .6;
+}
