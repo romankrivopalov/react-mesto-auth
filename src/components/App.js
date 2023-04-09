@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, useNavigate, Route, Routes } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
-import ProtectedRoute from './ProtectedRoute';
+import ProtectedRouteElement from './ProtectedRoute';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from './Header';
 import Main from './Main';
@@ -16,6 +16,8 @@ import auth from '../utils/auth';
 import api from '../utils/api';
 
 function App() {
+  const navigate = useNavigate();
+
   const [ loggedIn, setLoggedIn ] = useState(false),
         [ currentUser, setCurrentUser ] = useState({}),
         [ isLoading, setIsLoading ] = useState(false),
@@ -41,6 +43,7 @@ function App() {
       .then(res => {
         console.log(res);
         setLoggedIn(true);
+        navigate("/");
       })
   }
 
@@ -124,12 +127,9 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
       <CurrentUserContext.Provider value={currentUser}>
         <div className="App">
-
           <Header loggedIn={loggedIn} />
-
           <main>
             <Routes>
 
@@ -142,17 +142,28 @@ function App() {
                 element={<Register handleSubmit={handleRegistrationUser} />} />
 
               <Route path='/'
-                element={<ProtectedRoute
-                  element={<Main
-                    onEditAvatar={setIsEditAvatarPopupOpen}
-                    onEditProfile={setIsEditProfilePopupOpen}
-                    onAddPlace={setIsAddPlacePopupOpen}
-                    cards={cards}
-                    onCardClick={handleCardClick}
-                    onCardLike={handleCardLike}
-                    onCardDelete={handleCardDelete}/>}
+                element={<ProtectedRouteElement
+                  element={Main}
                   loggedIn={loggedIn}
+                  onEditAvatar={setIsEditAvatarPopupOpen}
+                  onEditProfile={setIsEditProfilePopupOpen}
+                  onAddPlace={setIsAddPlacePopupOpen}
+                  cards={cards}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
                 />}
+              />
+
+              <Route path='/' element={
+                <Main
+                onEditAvatar={setIsEditAvatarPopupOpen}
+                onEditProfile={setIsEditProfilePopupOpen}
+                onAddPlace={setIsAddPlacePopupOpen}
+                cards={cards}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}/>}
               />
 
               <Route path='*' element={<Navigate to='/' />} />
@@ -197,7 +208,6 @@ function App() {
 
         </div>
       </CurrentUserContext.Provider>
-    </BrowserRouter>
   );
 }
 

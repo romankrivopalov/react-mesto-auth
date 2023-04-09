@@ -8,7 +8,7 @@ function Header({ loggedIn }) {
         <img src={logoWhite} alt=" Логотип сервиса Место." className="header__logo" />
       </Link>
 
-      <Routes>
+      {/* <Routes>
         <Route path='/signin' element={
           <Link to='/signup' className='header__link'>
             Регистрация
@@ -21,7 +21,7 @@ function Header({ loggedIn }) {
           </Link>
         } />
 
-      </Routes>
+      </Routes> */}
     </header>
   )
 }
