@@ -12,6 +12,7 @@ import EditProfilePopup from './EditProfilePopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import ConfirmPopup from './ConfirmPopup';
+import auth from '../utils/auth';
 import api from '../utils/api';
 
 function App() {
@@ -29,6 +30,19 @@ function App() {
           setIsAddPlacePopupOpen,
         ],
         [ cards, setCards ] = useState([]);
+
+  function handleRegistrationUser(userData) {
+    auth.getRegistrationUser(userData)
+      .then(res => console.log(res))
+  }
+
+  function handleAuthorizationUser(userData) {
+    auth.getAuthorizationUser(userData)
+      .then(res => {
+        console.log(res);
+        setLoggedIn(true);
+      })
+  }
 
   useEffect(() => {
     Promise.all([ api.getUserInfo(), api.getInitialCards() ])
@@ -119,8 +133,13 @@ function App() {
           <main>
             <Routes>
 
-              <Route path='/signin' element={<Login />} />
-              <Route path='/signup' element={<Register />} />
+              <Route
+                path='/signin'
+                element={<Login handleSubmit={handleAuthorizationUser} />} />
+
+              <Route
+                path='/signup'
+                element={<Register handleSubmit={handleRegistrationUser} />} />
 
               <Route path='/'
                 element={<ProtectedRoute
@@ -136,7 +155,7 @@ function App() {
                 />}
               />
 
-              <Route path='*' element={<Navigate to='/'/>} />
+              <Route path='*' element={<Navigate to='/' />} />
 
             </Routes>
           </main>

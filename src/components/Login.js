@@ -1,8 +1,8 @@
 import AuthForm from "./AuthForm";
 
-function Login() {
+function Login({ handleSubmit }) {
   return (
-    <AuthForm title='Вход' btnText='Войти' />
+    <AuthForm title='Вход' btnText='Войти' handleSubmit={handleSubmit} />
   )
 }
 
