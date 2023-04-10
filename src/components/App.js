@@ -25,12 +25,14 @@ function App() {
         [ isEditAvatarPopupOpen, setIsEditAvatarPopupOpen ] = useState(false),
         [ isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = useState(false),
         [ isAddPlacePopupOpen, setIsAddPlacePopupOpen ] = useState(false),
+        [ isInfoTooltipOpen, setIsInfoTooltipOpen ] = useState(true),
         [ selectedCard, setSelectedCard ] = useState({name: '', link: ''}),
         [ cardToDelete, setCardToDelete ] = useState(null),
         allSetsPopupOpen = [
           setIsEditAvatarPopupOpen,
           setIsEditProfilePopupOpen,
           setIsAddPlacePopupOpen,
+          setIsInfoTooltipOpen,
         ],
         [ cards, setCards ] = useState([]);
 
@@ -207,7 +209,10 @@ function App() {
             isLoading={isLoading}
           />
 
-          <InfoTooltip />
+          <InfoTooltip
+            isOpen={isInfoTooltipOpen}
+            onClose={closeAllPopups}
+          />
 
         </div>
       </CurrentUserContext.Provider>
