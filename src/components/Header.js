@@ -10,8 +10,8 @@ function Header({ userEmail, onSignOut }) {
 
       <Routes>
         <Route path='/' element={
-          <div>
-            <p>{userEmail}</p>
+          <div className='header__wrapper'>
+            <p className='header__email'>{userEmail}</p>
             <button onClick={onSignOut} className='header__btn'>
               Выйти
             </button>

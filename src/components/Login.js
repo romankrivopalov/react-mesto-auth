@@ -6,10 +6,9 @@ function Login({ setUserEmail, setLoggedIn, navigate }) {
     auth.getAuthorizationUser(userData)
       .then(data => {
         if (data.token) {
-          // console.log(data) // токен
           localStorage.setItem('jwt', data.token);
           setLoggedIn(true);
-          // setUserEmail(data)
+          setUserEmail(userData.email)
           navigate("/");
         }
       })
