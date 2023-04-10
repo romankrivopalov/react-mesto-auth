@@ -1,7 +1,7 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import logoWhite from '../images/logo-white.svg'
 
-function Header() {
+function Header({ userEmail, onSignOut }) {
   return (
     <header className="header container">
       <Link to='/'>
@@ -11,9 +11,10 @@ function Header() {
       <Routes>
         <Route path='/' element={
           <div>
-            <Link to='/' className='header__link'>
-              выйти
-            </Link>
+            <p>{userEmail}</p>
+            <button onClick={onSignOut} className='header__btn'>
+              Выйти
+            </button>
           </div>
         } />
 

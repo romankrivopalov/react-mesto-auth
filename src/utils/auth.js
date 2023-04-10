@@ -19,7 +19,6 @@ class Auth {
   }
 
   getAuthorizationUser({ password, email }) {
-    console.log(password, email)
     return fetch(`${this._baseUrl}/signin`, {
       method: 'POST',
       headers: this._headers,

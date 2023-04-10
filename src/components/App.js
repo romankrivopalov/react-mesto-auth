@@ -18,6 +18,7 @@ import auth from "../utils/auth";
 function App() {
   const navigate = useNavigate(),
         [ loggedIn, setLoggedIn ] = useState(false),
+        [ userEmail, setUserEmail ] = useState(''),
         [ currentUser, setCurrentUser ] = useState({}),
         [ isLoading, setIsLoading ] = useState(false),
         [ isEditAvatarPopupOpen, setIsEditAvatarPopupOpen ] = useState(false),
@@ -35,9 +36,9 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem('jwt')) {
       auth.checkValidityUser(localStorage.getItem('jwt'))
-        .then(res => {
-          console.log(res)
+        .then(({ data }) => {
           setLoggedIn(true);
+          setUserEmail(data.email)
         })
         .then(() => {
           navigate("/", {replace: true});
@@ -52,6 +53,13 @@ function App() {
       })
       .catch(err => console.log(err));
   }, [])
+
+  function handleSignOut() {
+    console.log(1)
+    localStorage.clear('jwt');
+    setLoggedIn(false);
+    navigate("/signin", {replace: true});
+  }
 
   function closeAllPopups() {
     allSetsPopupOpen.forEach(item => item(false));
@@ -125,7 +133,7 @@ function App() {
   return (
       <CurrentUserContext.Provider value={currentUser}>
         <div className="App">
-          <Header />
+          <Header userEmail={userEmail} onSignOut={handleSignOut} />
           <Routes>
 
               <Route path='/'
@@ -144,13 +152,18 @@ function App() {
 
               <Route
                 path='/signin'
-                element={<Login setLoggedIn={setLoggedIn} navigate={navigate} />}
+                element={<Login
+                  setUserEmail={setUserEmail}
+                  setLoggedIn={setLoggedIn}
+                  navigate={navigate} />}
                 >
               </ Route>
 
               <Route
                 path='/signup'
-                element={<Register navigate={navigate} />}
+                element={<Register
+                  setUserEmail={setUserEmail}
+                  navigate={navigate} />}
                 >
               </ Route>
 
