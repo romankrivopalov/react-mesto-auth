@@ -12,6 +12,7 @@ import EditProfilePopup from './EditProfilePopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import ConfirmPopup from './ConfirmPopup';
+import InfoTooltip from './InfoTooltip';
 import api from '../utils/api';
 import auth from "../utils/auth";
 
@@ -205,6 +206,8 @@ function App() {
             onConfirm={handleConfirmBeforeDelete}
             isLoading={isLoading}
           />
+
+          <InfoTooltip />
 
         </div>
       </CurrentUserContext.Provider>
