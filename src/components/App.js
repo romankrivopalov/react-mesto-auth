@@ -33,22 +33,6 @@ function App() {
         ],
         [ cards, setCards ] = useState([]);
 
-  function handleRegistrationUser(userData) {
-    auth.getRegistrationUser(userData)
-      .then(res => console.log(res))
-  }
-
-  function handleAuthorizationUser(userData) {
-    auth.getAuthorizationUser(userData)
-      .then(data => {
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-          setLoggedIn(true);
-          navigate("/");
-        }
-      })
-  }
-
   useEffect(() => {
     Promise.all([ api.getUserInfo(), api.getInitialCards() ])
       .then(res => {
@@ -58,6 +42,22 @@ function App() {
       })
       .catch(err => console.log(err));
   }, [])
+
+  function handleAuthorizationUser(userData) {
+    auth.getAuthorizationUser(userData)
+      .then(data => {
+        if (data.token) {
+          localStorage.setItem('jwt', data.token);
+          setLoggedIn(true);
+          navigate("/");
+        }
+      })
+  }
+
+  function handleRegistrationUser(userData) {
+    auth.getRegistrationUser(userData)
+      .then(res => console.log(res))
+  }
 
   function closeAllPopups() {
     allSetsPopupOpen.forEach(item => item(false));
