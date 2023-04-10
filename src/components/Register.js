@@ -1,9 +1,17 @@
 import { Link } from "react-router-dom";
 import AuthForm from "./AuthForm";
+import auth from "../utils/auth";
 
-function Register({ handleSubmit }) {
+function Register({ navigate }) {
+  function handleRegistrationUser(userData) {
+    auth.getRegistrationUser(userData)
+      .then(data => {
+        navigate("/signin");
+      })
+  }
+
   return (
-    <AuthForm title='Регистрация' btnText='Зарегистрироваться' handleSubmit={handleSubmit}>
+    <AuthForm title='Регистрация' btnText='Зарегистрироваться' handleSubmit={handleRegistrationUser}>
       <Link
         to="/"
         className="auth-form__link">

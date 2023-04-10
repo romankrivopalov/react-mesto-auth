@@ -12,7 +12,6 @@ import EditProfilePopup from './EditProfilePopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import ConfirmPopup from './ConfirmPopup';
-import auth from '../utils/auth';
 import api from '../utils/api';
 
 function App() {
@@ -41,11 +40,6 @@ function App() {
       })
       .catch(err => console.log(err));
   }, [])
-
-  function handleRegistrationUser(userData) {
-    auth.getRegistrationUser(userData)
-      .then(res => console.log(res))
-  }
 
   function closeAllPopups() {
     allSetsPopupOpen.forEach(item => item(false));
@@ -129,7 +123,7 @@ function App() {
 
               <Route
                 path='/signup'
-                element={<Register handleSubmit={handleRegistrationUser} />} />
+                element={<Register navigate={navigate} />} />
 
               <Route path='/'
                 element={<ProtectedRouteElement
