@@ -16,9 +16,8 @@ import auth from '../utils/auth';
 import api from '../utils/api';
 
 function App() {
-  const navigate = useNavigate();
-
-  const [ loggedIn, setLoggedIn ] = useState(false),
+  const navigate = useNavigate(),
+        [ loggedIn, setLoggedIn ] = useState(false),
         [ currentUser, setCurrentUser ] = useState({}),
         [ isLoading, setIsLoading ] = useState(false),
         [ isEditAvatarPopupOpen, setIsEditAvatarPopupOpen ] = useState(false),
@@ -42,17 +41,6 @@ function App() {
       })
       .catch(err => console.log(err));
   }, [])
-
-  function handleAuthorizationUser(userData) {
-    auth.getAuthorizationUser(userData)
-      .then(data => {
-        if (data.token) {
-          localStorage.setItem('jwt', data.token);
-          setLoggedIn(true);
-          navigate("/");
-        }
-      })
-  }
 
   function handleRegistrationUser(userData) {
     auth.getRegistrationUser(userData)
@@ -137,7 +125,7 @@ function App() {
 
               <Route
                 path='/signin'
-                element={<Login handleSubmit={handleAuthorizationUser} />} />
+                element={<Login setLoggedIn={setLoggedIn} navigate={navigate} />} />
 
               <Route
                 path='/signup'
