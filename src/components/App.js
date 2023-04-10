@@ -40,10 +40,12 @@ function App() {
 
   function handleAuthorizationUser(userData) {
     auth.getAuthorizationUser(userData)
-      .then(res => {
-        console.log(res);
-        setLoggedIn(true);
-        navigate("/");
+      .then(data => {
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          setLoggedIn(true);
+          navigate("/");
+        }
       })
   }
 
