@@ -27,7 +27,7 @@ class Auth {
         email: email
       })
     })
-    .then(res => res.json())
+    .then(res => {if (res.ok) return res.json()})
   }
 
   checkValidityUser(jwt) {

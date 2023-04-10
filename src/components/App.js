@@ -158,7 +158,8 @@ function App() {
                 element={<Login
                   setUserEmail={setUserEmail}
                   setLoggedIn={setLoggedIn}
-                  navigate={navigate} />}
+                  navigate={navigate}
+                  onInfoTooltipOpen={setIsInfoTooltipOpen} />}
                 >
               </ Route>
 

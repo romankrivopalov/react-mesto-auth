@@ -1,7 +1,7 @@
 import AuthForm from "./AuthForm";
 import auth from "../utils/auth";
 
-function Login({ setUserEmail, setLoggedIn, navigate }) {
+function Login({ setUserEmail, setLoggedIn, navigate, onInfoTooltipOpen }) {
   function handleAuthorizationUser(userData) {
     auth.getAuthorizationUser(userData)
       .then(data => {
@@ -12,6 +12,7 @@ function Login({ setUserEmail, setLoggedIn, navigate }) {
           navigate("/");
         }
       })
+      .catch(() => onInfoTooltipOpen({ isOpen: true, status: false }))
   }
 
   return (
