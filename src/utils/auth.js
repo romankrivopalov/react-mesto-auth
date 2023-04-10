@@ -31,15 +31,15 @@ class Auth {
     .then(res => res.json())
   }
 
-  checkValidityUser({ id, email }) {
-    return fetch(this._baseUrl, {
+  checkValidityUser(jwt) {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
-      headers: this._headers,
-      body: JSON.stringify({
-        "_id": id,
-        "email": email,
-      })
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization" : `Bearer ${jwt}`
+      }
     })
+    .then(res => res.json())
   }
 }
 

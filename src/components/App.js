@@ -13,6 +13,7 @@ import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import ConfirmPopup from './ConfirmPopup';
 import api from '../utils/api';
+import auth from "../utils/auth";
 
 function App() {
   const navigate = useNavigate(),
@@ -32,6 +33,17 @@ function App() {
         [ cards, setCards ] = useState([]);
 
   useEffect(() => {
+    if (localStorage.getItem('jwt')) {
+      auth.checkValidityUser(localStorage.getItem('jwt'))
+        .then(res => {
+          console.log(res)
+          setLoggedIn(true);
+        })
+        .then(() => {
+          navigate("/", {replace: true});
+        })
+    }
+
     Promise.all([ api.getUserInfo(), api.getInitialCards() ])
       .then(res => {
         const [ userData, cardsArray ] = res;
@@ -40,6 +52,10 @@ function App() {
       })
       .catch(err => console.log(err));
   }, [])
+
+  function checkValidityUser() {
+
+  }
 
   function closeAllPopups() {
     allSetsPopupOpen.forEach(item => item(false));
@@ -114,16 +130,9 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <div className="App">
           <Header loggedIn={loggedIn} />
+
           <main>
             <Routes>
-
-              <Route
-                path='/signin'
-                element={<Login setLoggedIn={setLoggedIn} navigate={navigate} />} />
-
-              <Route
-                path='/signup'
-                element={<Register navigate={navigate} />} />
 
               <Route path='/'
                 element={<ProtectedRouteElement
@@ -139,16 +148,13 @@ function App() {
                 />}
               />
 
-              <Route path='/' element={
-                <Main
-                onEditAvatar={setIsEditAvatarPopupOpen}
-                onEditProfile={setIsEditProfilePopupOpen}
-                onAddPlace={setIsAddPlacePopupOpen}
-                cards={cards}
-                onCardClick={handleCardClick}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}/>}
-              />
+              <Route
+                path='/signin'
+                element={<Login setLoggedIn={setLoggedIn} navigate={navigate} />} />
+
+              <Route
+                path='/signup'
+                element={<Register navigate={navigate} />} />
 
               <Route path='*' element={<Navigate to='/' />} />
 
