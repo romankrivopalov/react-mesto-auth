@@ -1,11 +1,11 @@
 import iconDone from '../images/icon-done.svg';
 import iconError from '../images/icon-error.svg';
 
-function InfoTooltip({ isOpen, onClose }) {
+function InfoTooltip({ isOpenConfig, onClose }) {
 
   return (
     <section
-      className={`info-tooltip ${isOpen ? 'info-tooltip_opened' : ''}`}
+      className={`info-tooltip ${isOpenConfig.isOpen ? 'info-tooltip_opened' : ''}`}
       onClick={({ target }) => {
         if (target.classList.contains('info-tooltip_opened') || target.classList.contains('info-tooltip__close')) {
           onClose();
@@ -13,8 +13,8 @@ function InfoTooltip({ isOpen, onClose }) {
       }}>
       <div className="info-tooltip__container">
         <button type="button" onClick={onClose} className="info-tooltip__close" />
-        <img src={iconDone} className="info-tooltip__img" alt=""></img>
-        <p className="info-tooltip__text">Test</p>
+        <img src={isOpenConfig.status ? iconDone : iconError} className="info-tooltip__img" alt=""></img>
+        <p className="info-tooltip__text">{isOpenConfig.status ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}</p>
       </div>
     </section>
   )
