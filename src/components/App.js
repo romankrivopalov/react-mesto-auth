@@ -53,10 +53,6 @@ function App() {
       .catch(err => console.log(err));
   }, [])
 
-  function checkValidityUser() {
-
-  }
-
   function closeAllPopups() {
     allSetsPopupOpen.forEach(item => item(false));
     setSelectedCard({name: '', link: ''});
@@ -129,10 +125,8 @@ function App() {
   return (
       <CurrentUserContext.Provider value={currentUser}>
         <div className="App">
-          <Header loggedIn={loggedIn} />
-
-          <main>
-            <Routes>
+          <Header />
+          <Routes>
 
               <Route path='/'
                 element={<ProtectedRouteElement
@@ -150,16 +144,19 @@ function App() {
 
               <Route
                 path='/signin'
-                element={<Login setLoggedIn={setLoggedIn} navigate={navigate} />} />
+                element={<Login setLoggedIn={setLoggedIn} navigate={navigate} />}
+                >
+              </ Route>
 
               <Route
                 path='/signup'
-                element={<Register navigate={navigate} />} />
+                element={<Register navigate={navigate} />}
+                >
+              </ Route>
 
               <Route path='*' element={<Navigate to='/' />} />
 
             </Routes>
-          </main>
 
           {loggedIn && <Footer />}
 

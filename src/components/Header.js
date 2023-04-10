@@ -1,14 +1,22 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import logoWhite from '../images/logo-white.svg'
 
-function Header({ loggedIn }) {
+function Header() {
   return (
     <header className="header container">
       <Link to='/'>
         <img src={logoWhite} alt=" Логотип сервиса Место." className="header__logo" />
       </Link>
 
-      {/* <Routes>
+      <Routes>
+        <Route path='/' element={
+          <div>
+            <Link to='/' className='header__link'>
+              выйти
+            </Link>
+          </div>
+        } />
+
         <Route path='/signin' element={
           <Link to='/signup' className='header__link'>
             Регистрация
@@ -21,7 +29,7 @@ function Header({ loggedIn }) {
           </Link>
         } />
 
-      </Routes> */}
+      </Routes>
     </header>
   )
 }
