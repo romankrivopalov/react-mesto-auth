@@ -42,21 +42,22 @@ function App() {
       auth.checkValidityUser(localStorage.getItem('jwt'))
         .then(({ data }) => {
           setLoggedIn(true);
-          setUserEmail(data.email)
+          setUserEmail(data.email);
         })
-        .then(() => {
-          navigate("/", {replace: true});
-        })
+        .then(() => navigate("/", {replace: true}))
     }
 
-    Promise.all([ api.getUserInfo(), api.getInitialCards() ])
-      .then(res => {
-        const [ userData, cardsArray ] = res;
-        setCards(cardsArray);
-        setCurrentUser(userData);
-      })
-      .catch(err => console.log(err));
-  }, [navigate])
+    if (loggedIn) {
+      Promise.all([ api.getUserInfo(), api.getInitialCards() ])
+        .then(res => {
+          console.log(1)
+          const [ userData, cardsArray ] = res;
+          setCards(cardsArray);
+          setCurrentUser(userData);
+        })
+        .catch(err => console.log(err));
+      }
+  }, [navigate, loggedIn])
 
   function handleSignOut() {
     console.log(1)
@@ -183,7 +184,7 @@ function App() {
                 >
               </ Route>
 
-              <Route path='*' element={<Navigate to='/' />} />
+              <Route path='*' element={<Navigate to='/' replace={true} />} />
 
             </Routes>
 
