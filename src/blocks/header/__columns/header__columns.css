@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 992px) {
   .header__columns {
     padding: 45px 0 40px 0;
   }
