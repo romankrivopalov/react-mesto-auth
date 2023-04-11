@@ -22,6 +22,7 @@
   * Адаптивный пользовательский интерфейс
   * Flexbox
   * Grid Layout
+* Регистрация и авторизация пользователей (взаимодействие с localStorage)
 * БЭМ Nested
 * Accessibility
 * Webpack
