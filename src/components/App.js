@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { Navigate, useNavigate, Route, Routes } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
-import ProtectedRoute from './ProtectedRoute';
+import ProtectedRouteElement from './ProtectedRoute';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from './Header';
 import Main from './Main';
@@ -12,33 +12,63 @@ import EditProfilePopup from './EditProfilePopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import ConfirmPopup from './ConfirmPopup';
+import InfoTooltip from './InfoTooltip';
 import api from '../utils/api';
+import auth from "../utils/auth";
 
 function App() {
-  const [ loggedIn, setLoggedIn ] = useState(false),
+  const navigate = useNavigate(),
+        [ loggedIn, setLoggedIn ] = useState(false),
+        [ userEmail, setUserEmail ] = useState(''),
         [ currentUser, setCurrentUser ] = useState({}),
         [ isLoading, setIsLoading ] = useState(false),
+        [ isOpenBurger, setIsOpenBurger ] = useState(false),
         [ isEditAvatarPopupOpen, setIsEditAvatarPopupOpen ] = useState(false),
         [ isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = useState(false),
         [ isAddPlacePopupOpen, setIsAddPlacePopupOpen ] = useState(false),
+        [ isInfoTooltipOpen, setIsInfoTooltipOpen ] = useState(false),
         [ selectedCard, setSelectedCard ] = useState({name: '', link: ''}),
         [ cardToDelete, setCardToDelete ] = useState(null),
         allSetsPopupOpen = [
           setIsEditAvatarPopupOpen,
           setIsEditProfilePopupOpen,
           setIsAddPlacePopupOpen,
+          setIsInfoTooltipOpen,
         ],
         [ cards, setCards ] = useState([]);
 
   useEffect(() => {
-    Promise.all([ api.getUserInfo(), api.getInitialCards() ])
-      .then(res => {
-        const [ userData, cardsArray ] = res;
-        setCards(cardsArray);
-        setCurrentUser(userData);
-      })
-      .catch(err => console.log(err));
-  }, [])
+    if (localStorage.getItem('jwt')) {
+      auth.checkValidityUser(localStorage.getItem('jwt'))
+        .then(({ data }) => {
+          setLoggedIn(true);
+          setUserEmail(data.email);
+        })
+        .then(() => navigate("/", {replace: true}))
+    }
+
+    if (loggedIn) {
+      Promise.all([ api.getUserInfo(), api.getInitialCards() ])
+        .then(res => {
+          console.log(1)
+          const [ userData, cardsArray ] = res;
+          setCards(cardsArray);
+          setCurrentUser(userData);
+        })
+        .catch(err => console.log(err));
+      }
+  }, [navigate, loggedIn])
+
+  function handleSignOut() {
+    console.log(1)
+    localStorage.clear('jwt');
+    setLoggedIn(false);
+    navigate("/signin", {replace: true});
+  }
+
+  function handleToggleBurger() {
+    setIsOpenBurger(!isOpenBurger)
+  }
 
   function closeAllPopups() {
     allSetsPopupOpen.forEach(item => item(false));
@@ -47,12 +77,13 @@ function App() {
     setIsLoading(false)
   }
 
-  function handleUpdateAvatar(avatarData) {
+  function handleUpdateAvatar(avatarData, resetValues) {
     setIsLoading(true)
     api.updateAvatar(avatarData)
       .then(userData => {
         setCurrentUser(userData);
         closeAllPopups();
+        resetValues();
       })
       .catch(err => console.log(err))
       .finally(() => setIsLoading(false));
@@ -69,12 +100,13 @@ function App() {
       .finally(() => setIsLoading(false));
   }
 
-  function handleAddPlaceSubmit(cardData) {
+  function handleAddPlaceSubmit(cardData, resetValues) {
     setIsLoading(true)
     api.postNewCard(cardData)
       .then(newCard => {
         setCards([newCard, ...cards]);
         closeAllPopups();
+        resetValues();
       })
       .catch(err => console.log(err))
       .finally(() => setIsLoading(false));
@@ -110,34 +142,51 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
       <CurrentUserContext.Provider value={currentUser}>
         <div className="App">
-
-          <Header loggedIn={loggedIn} />
-
-          <main>
-            <Routes>
-
-              <Route path='/signin' element={<Login />} />
-              <Route path='/signup' element={<Register />} />
+          <Header
+            userEmail={userEmail}
+            onSignOut={handleSignOut}
+            isOpenBurger={isOpenBurger}
+            onToggleBurger={handleToggleBurger} />
+          <Routes>
 
               <Route path='/'
-                element={<ProtectedRoute
-                  element={<Main
-                    onEditAvatar={setIsEditAvatarPopupOpen}
-                    onEditProfile={setIsEditProfilePopupOpen}
-                    onAddPlace={setIsAddPlacePopupOpen}
-                    cards={cards}
-                    onCardClick={handleCardClick}
-                    onCardLike={handleCardLike}
-                    onCardDelete={handleCardDelete}/>}
+                element={<ProtectedRouteElement
+                  element={Main}
                   loggedIn={loggedIn}
+                  onEditAvatar={setIsEditAvatarPopupOpen}
+                  onEditProfile={setIsEditProfilePopupOpen}
+                  onAddPlace={setIsAddPlacePopupOpen}
+                  cards={cards}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
                 />}
               />
 
+              <Route
+                path='/signin'
+                element={<Login
+                  setUserEmail={setUserEmail}
+                  setLoggedIn={setLoggedIn}
+                  navigate={navigate}
+                  onInfoTooltipOpen={setIsInfoTooltipOpen} />}
+                >
+              </ Route>
+
+              <Route
+                path='/signup'
+                element={<Register
+                  setUserEmail={setUserEmail}
+                  navigate={navigate}
+                  onInfoTooltipOpen={setIsInfoTooltipOpen} />}
+                >
+              </ Route>
+
+              <Route path='*' element={<Navigate to='/' replace={true} />} />
+
             </Routes>
-          </main>
 
           {loggedIn && <Footer />}
 
@@ -174,9 +223,13 @@ function App() {
             isLoading={isLoading}
           />
 
+          <InfoTooltip
+            isOpenConfig={isInfoTooltipOpen}
+            onClose={closeAllPopups}
+          />
+
         </div>
       </CurrentUserContext.Provider>
-    </BrowserRouter>
   );
 }
 

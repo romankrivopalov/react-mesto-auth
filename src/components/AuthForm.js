@@ -1,15 +1,31 @@
-function AuthForm({ title, btnText, children }) {
+import { useState } from "react";
+
+function AuthForm({ title, btnText, handleSubmit, children }) {
+  const [values, setValues] = useState({'password': '', 'email': ''})
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+
+    setValues((oldValues) =>({ ...oldValues, [name]: value }))
+  }
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+
+    handleSubmit(values)
+  }
 
   return (
     <section className="auth-form">
       <h2 className="auth-form__title">{title}</h2>
-      <form>
+      <form onSubmit={handleSubmitForm}>
         <label className="auth-form__input-wrapper">
           <input
             type="email"
-            name="userEmail"
+            name="email"
             className="auth-form__input"
             placeholder="Email"
+            onChange={handleChange}
             required />
             <span className="auth-form__input-error">
             </span>
@@ -17,12 +33,13 @@ function AuthForm({ title, btnText, children }) {
 
         <label className="auth-form__input-wrapper">
           <input
-          type="text"
-          name="userPassword"
+          type="password"
+          name="password"
           className="auth-form__input"
           placeholder="Пароль"
           minLength="2"
           maxLength="30"
+          onChange={handleChange}
           required />
           <span className="auth-form__input-error">
           </span>

@@ -7,7 +7,7 @@ function Main(props) {
   const userData = useContext(CurrentUserContext);
 
   return (
-    <>
+    <main>
       <section className="profile container">
         <button
           style={{ backgroundImage: `url(${userData.avatar})` }}
@@ -50,7 +50,7 @@ function Main(props) {
           ))}
         </ul>
       </section>
-    </>
+    </main>
   )
 }
 

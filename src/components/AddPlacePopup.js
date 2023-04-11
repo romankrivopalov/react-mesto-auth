@@ -17,9 +17,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
     onAddPlace({
       name: values['placeName'],
       link: values['placeLink']
-    });
-
-    resetValues();
+    }, resetValues);
   }
 
   return (
