@@ -1,36 +1,50 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import logoWhite from '../images/logo-white.svg'
 
-function Header({ userEmail, onSignOut }) {
+function Header({ userEmail, onSignOut, isOpenBurger, onToggleBurger }) {
   return (
     <header className="header container">
-      <Link to='/'>
-        <img src={logoWhite} alt=" Логотип сервиса Место." className="header__logo" />
-      </Link>
+      <section className={`header__aside ${isOpenBurger ? 'header__aside_opened' : ''}`}>
+        <p className='header__email'>{userEmail}</p>
+        <button onClick={onSignOut} className='header__btn'>
+          Выйти
+        </button>
+      </section>
 
-      <Routes>
-        <Route path='/' element={
-          <div className='header__wrapper'>
-            <p className='header__email'>{userEmail}</p>
-            <button onClick={onSignOut} className='header__btn'>
-              Выйти
-            </button>
-          </div>
-        } />
+      <div className='header__columns'>
+        <Link to='/'>
+          <img src={logoWhite} alt=" Логотип сервиса Место." className="header__logo" />
+        </Link>
 
-        <Route path='/signin' element={
-          <Link to='/signup' className='header__link'>
-            Регистрация
-          </Link>
-        } />
+        <Routes>
+          <Route path='/' element={
+            <div className='header__container'>
+              <button className='header__burger' onClick={onToggleBurger}>
+                <div className='header__burger-inner'></div>
+              </button>
+              <div className='header__wrapper'>
+                <p className='header__email'>{userEmail}</p>
+                <button onClick={onSignOut} className='header__btn'>
+                  Выйти
+                </button>
+              </div>
+            </div>
+          } />
 
-        <Route path='/signup' element={
-          <Link to='/signin' className='header__link'>
-            Войти
-          </Link>
-        } />
+          <Route path='/signin' element={
+            <Link to='/signup' className='header__link'>
+              Регистрация
+            </Link>
+          } />
 
-      </Routes>
+          <Route path='/signup' element={
+            <Link to='/signin' className='header__link'>
+              Войти
+            </Link>
+          } />
+
+        </Routes>
+      </div>
     </header>
   )
 }

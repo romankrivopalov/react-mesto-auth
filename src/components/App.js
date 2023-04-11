@@ -22,6 +22,7 @@ function App() {
         [ userEmail, setUserEmail ] = useState(''),
         [ currentUser, setCurrentUser ] = useState({}),
         [ isLoading, setIsLoading ] = useState(false),
+        [ isOpenBurger, setIsOpenBurger ] = useState(false),
         [ isEditAvatarPopupOpen, setIsEditAvatarPopupOpen ] = useState(false),
         [ isEditProfilePopupOpen, setIsEditProfilePopupOpen ] = useState(false),
         [ isAddPlacePopupOpen, setIsAddPlacePopupOpen ] = useState(false),
@@ -62,6 +63,10 @@ function App() {
     localStorage.clear('jwt');
     setLoggedIn(false);
     navigate("/signin", {replace: true});
+  }
+
+  function handleToggleBurger() {
+    setIsOpenBurger(!isOpenBurger)
   }
 
   function closeAllPopups() {
@@ -136,7 +141,11 @@ function App() {
   return (
       <CurrentUserContext.Provider value={currentUser}>
         <div className="App">
-          <Header userEmail={userEmail} onSignOut={handleSignOut} />
+          <Header
+            userEmail={userEmail}
+            onSignOut={handleSignOut}
+            isOpenBurger={isOpenBurger}
+            onToggleBurger={handleToggleBurger} />
           <Routes>
 
               <Route path='/'

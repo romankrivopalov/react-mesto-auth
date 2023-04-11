@@ -1,14 +1,9 @@
 .header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 28px 30px 31px 30px;
+  margin: 0;
+  padding: 0;
   border-bottom: 1px solid rgba(84, 84, 84, .7);
-}
-
-@media screen and (min-width: 992px) {
-  .header {
-    padding: 45px 0 38px 0;
-    max-width: 880px;
-  }
 }

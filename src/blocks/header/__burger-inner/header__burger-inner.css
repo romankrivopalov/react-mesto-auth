@@ -1,0 +1,26 @@
+.header__burger-inner {
+  position: relative;
+  height: 3px;
+  width: 100%;
+  background-color: var(--color-white);
+}
+
+.header__burger-inner::after {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: var(--color-white);
+}
+
+.header__burger-inner::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: var(--color-white);
+}
