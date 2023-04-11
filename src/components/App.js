@@ -56,7 +56,7 @@ function App() {
         setCurrentUser(userData);
       })
       .catch(err => console.log(err));
-  }, [])
+  }, [navigate])
 
   function handleSignOut() {
     console.log(1)
@@ -76,12 +76,13 @@ function App() {
     setIsLoading(false)
   }
 
-  function handleUpdateAvatar(avatarData) {
+  function handleUpdateAvatar(avatarData, resetValues) {
     setIsLoading(true)
     api.updateAvatar(avatarData)
       .then(userData => {
         setCurrentUser(userData);
         closeAllPopups();
+        resetValues();
       })
       .catch(err => console.log(err))
       .finally(() => setIsLoading(false));
@@ -98,12 +99,13 @@ function App() {
       .finally(() => setIsLoading(false));
   }
 
-  function handleAddPlaceSubmit(cardData) {
+  function handleAddPlaceSubmit(cardData, resetValues) {
     setIsLoading(true)
     api.postNewCard(cardData)
       .then(newCard => {
         setCards([newCard, ...cards]);
         closeAllPopups();
+        resetValues();
       })
       .catch(err => console.log(err))
       .finally(() => setIsLoading(false));

@@ -16,9 +16,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
 
     onUpdateAvatar({
       avatar: values['profileAvatarLink'],
-    });
-
-    resetValues();
+    }, resetValues);
   }
 
   return (
