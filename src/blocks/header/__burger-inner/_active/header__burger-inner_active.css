@@ -1,29 +1,28 @@
-.header__burger-inner {
+.header__burger-inner_active {
   position: relative;
   height: 3px;
   width: 100%;
-  background-color: var(--color-white);
-  transition: transform .5s ease-out;
+  transform: rotate(135deg) scaleX(120%);
 }
 
-.header__burger-inner::after {
+.header__burger-inner_active::after {
   content: '';
   position: absolute;
   top: 9px;
   left: 0;
   height: 3px;
-  width: 100%;
+  width: 25px;
   background-color: var(--color-white);
-  transition: transform .1s ease;
+  transform: translateY(-9px);
 }
 
-.header__burger-inner::before {
+.header__burger-inner_active::before {
   content: '';
   position: absolute;
   top: -9px;
   left: 0;
   height: 3px;
-  width: 100%;
+  width: 25px;
   background-color: var(--color-white);
-  transition: transform .2s ease-out;
+  transform: rotate(90deg) translateX(9px) scaleX(120%);
 }

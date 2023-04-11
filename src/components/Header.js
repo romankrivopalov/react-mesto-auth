@@ -19,7 +19,7 @@ function Header({ userEmail, onSignOut, isOpenBurger, onToggleBurger }) {
 
             <div className='header__container'>
               <button className='header__burger' onClick={onToggleBurger}>
-                <div className='header__burger-inner'></div>
+                <div className={`header__burger-inner ${isOpenBurger ? 'header__burger-inner_active' : ''}`}></div>
               </button>
               <div className='header__wrapper'>
                 <p className='header__email'>{userEmail}</p>
