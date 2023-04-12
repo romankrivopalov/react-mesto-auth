@@ -46,21 +46,21 @@ function App() {
         })
         .then(() => navigate("/", {replace: true}))
     }
+  }, [])
 
+  useEffect(() => {
     if (loggedIn) {
       Promise.all([ api.getUserInfo(), api.getInitialCards() ])
         .then(res => {
-          console.log(1)
           const [ userData, cardsArray ] = res;
           setCards(cardsArray);
           setCurrentUser(userData);
         })
         .catch(err => console.log(err));
       }
-  }, [navigate, loggedIn])
+  }, [loggedIn])
 
   function handleSignOut() {
-    console.log(1)
     localStorage.clear('jwt');
     setLoggedIn(false);
     navigate("/signin", {replace: true});
