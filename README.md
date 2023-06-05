@@ -5,10 +5,12 @@
 
 ### **Версии проекта**
 ***
-1. Mesto (React авторизация, в разработке) :star: *этот репозиторий*
-2. [Mesto (React)](https://github.com/romankrivopalov/mesto-react)
-3. [Mesto (версия classes)](https://github.com/romankrivopalov/mesto)
-4. [Mesto (классическая версия на JS)](https://github.com/romankrivopalov/mesto-classic)
+1. [Mesto (версия фронтенд + бэкенд)](https://github.com/romankrivopalov/react-mesto-api-full-gha)
+2. [Mesto (бэкенд)](https://github.com/romankrivopalov/express-mesto-gha)
+3. Mesto (React, регистрация и авторизация) :star: *этот репозиторий*
+4. [Mesto (React)](https://github.com/romankrivopalov/mesto-react)
+5. [Mesto (версия classes)](https://github.com/romankrivopalov/mesto)
+6. [Mesto (классическая версия на JS)](https://github.com/romankrivopalov/mesto-classic)
 
 ### **Технологии**
 ***
